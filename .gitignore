@@ -49,3 +49,8 @@ data/user_data/Singleton*
 
 # Environment variables
 .env
+
+# Temporary / Scratch text notes
+bio_allati_mintazatok_cset.txt
+*.txt
+!requirements.txt
