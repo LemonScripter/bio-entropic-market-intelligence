@@ -29,11 +29,11 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\textcolor{darkgray}{\small Bio-Entropic Stealth Framework}}
-\lhead{\textcolor{darkgray}{\small Technical Whitepaper \& Empirical Proof}}
+\lhead{\textcolor{darkgray}{\small Technical Whitepaper \& Empirical Demonstration}}
 \rfoot{\small Page \thepage}
 
 \title{\textbf{\LARGE Bio-Entropic Web Data Collection and Market Intelligence Framework}\\[0.4em]
-\Large Mathematical Modeling of Inhomogeneous Poisson Processes, Empirical Movebank Telemetry Ingestion, and CDP-Level Anti-Fingerprint Validation}
+\Large Inhomogeneous Poisson Process Modeling, Empirical Movebank Telemetry Ingestion, and CDP-Level Anti-Fingerprint Evaluation}
 \author{\textbf{LemonScripter Systems Architecture \& Advanced Automation Engineering}}
 \date{September 2026}
 
@@ -43,7 +43,7 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-Modern behavioral web application firewalls and anti-bot defenses (e.g., AWS WAF Bot Control, Akamai Bot Manager, Cloudflare Turnstile) detect automated agents via multi-layer inspection: TLS/JA4 fingerprinting, Chrome DevTools Protocol (CDP) execution artifacts, and statistical entropy analysis of inter-request delays. This whitepaper presents a production-grade market intelligence architecture driven by a \textbf{Bio-Entropic State Engine}. By mapping multi-day empirical animal telemetry from the global \textbf{Movebank} repository onto an inhomogeneous Poisson process rate parameter $\lambda(t)$, the system modulates macro-operational cycles and microscopic log-normal dwell times. We provide rigorous mathematical derivations, specify exact Movebank study IDs and biometrics, validate countermeasures against recent 2026 CDP-level machine learning classifiers (wheel-delta streams and click-duration variance), and report verifiable empirical results across 797 deep Amazon reviews (100\% Verified Purchase) with a 0\% ban rate.
+Modern behavioral web application firewalls and anti-bot defenses (e.g., AWS WAF Bot Control, Akamai Bot Manager, Cloudflare Turnstile) inspect client sessions across multiple orthogonal vectors: TLS/JA4 handshake profiles, Chrome DevTools Protocol (CDP) execution artifacts, and the statistical entropy of inter-request timing. This whitepaper presents an experimental market intelligence architecture driven by a \textbf{Bio-Entropic State Engine}. By mapping empirical multi-day animal telemetry from the global \textbf{Movebank} repository onto an inhomogeneous Poisson process rate parameter $\lambda(t)$, the system modulates macro-operational cycles and microscopic log-normal dwell times. We formulate the mathematical model, provide exact Movebank study identifiers, demonstrate countermeasures against recent 2026 CDP-level machine learning detection features (wheel-delta streams and click-duration variance), and report empirical results across 797 extracted Amazon bestseller reviews (100\% Verified Purchase) with 0\% challenge rates under the tested experimental envelope.
 \end{abstract}
 
 \vspace{0.6em}
@@ -52,7 +52,7 @@ Modern behavioral web application firewalls and anti-bot defenses (e.g., AWS WAF
 
 \section{System Architecture and Operating Principles}
 
-The framework is structured into four strictly decoupled subsystems:
+The framework is structured into four decoupled subsystems:
 
 \begin{enumerate}
     \item \textbf{Bio-Entropic Timing \& Seeding Engine (\texttt{src/bio\_engine.py}):} 
@@ -70,7 +70,7 @@ The framework is structured into four strictly decoupled subsystems:
 
 \section{Mathematical Formulation: Telemetry to Inhomogeneous Poisson Rate $\lambda(t)$}
 
-To eliminate pseudo-random number generator (PRNG) periodicities detectable by spectral analysis, the inter-request dwell time $\Delta t$ is modeled as a non-stationary stochastic process governed by empirical biological activity $A(t) \in [0, 1]$:
+To reduce synthetic pseudo-random number generator (PRNG) periodicities detectable by spectral analysis, the inter-request dwell time $\Delta t$ is modeled as a non-stationary stochastic process modulated by empirical biological activity $A(t) \in [0, 1]$:
 
 \begin{equation}
 \lambda(t) = \lambda_{\text{base}} \cdot \Phi_{\text{circadian}}(t) \cdot \left[1 + \gamma \cdot \frac{A(t) - \bar{A}}{\sigma_A}\right]
@@ -106,23 +106,23 @@ The framework natively ingests empirical 168-hour continuous sensor datasets fro
 \caption{Empirical Movebank telemetry dataset registry and operational profiles}
 \end{table}
 
-\section{CDP-Level Countermeasures: Neutralizing 2026 Behavioral ML Classifiers}
+\section{CDP-Level Countermeasures: Mitigating 2026 Behavioral ML Classifiers}
 
-Recent 2026 behavioral detection benchmarks (e.g., The Moonlight research on Minimal Feature Sets under Browser Automation) demonstrated that supervised classifiers (Random Forest / XGBoost) achieve $F_1 = 1.000$ detection accuracy by exploiting three CDP artifacts. Our stealth layer introduces direct countermeasures:
+Recent 2026 behavioral detection benchmarks (e.g., The Moonlight research on Minimal Feature Sets under Browser Automation) demonstrated that supervised classifiers (Random Forest / XGBoost) exploit three specific CDP execution artifacts. Our stealth layer introduces direct architectural mitigations:
 
 \begin{enumerate}
     \item \textbf{Native Wheel-Delta Stream Generation:} Synthetic scrolling via JavaScript \texttt{window.scrollTo()} leaves empty \texttt{WheelEvent} buffers. Our engine executes stepped physical wheel dispatches (\texttt{page.mouse.wheel(0, delta)}) in $4-8$ randomized sub-steps with non-linear deceleration.
-    \item \textbf{Physiological Click Duration Variance:} Traditional bots dispatch instantaneous click events ($T_{\text{down}} \approx 0\text{ ms}$). We decouple \texttt{mouse.down()} and \texttt{mouse.up()} with a log-normal holding time:
+    \item \textbf{Physiological Click Duration Variance:} Traditional automation scripts dispatch instantaneous click events ($T_{\text{down}} \approx 0\text{ ms}$). We decouple \texttt{mouse.down()} and \texttt{mouse.up()} with a log-normal holding time:
     \begin{equation}
     T_{\text{down}} \sim \text{Lognormal}(\mu = 65\text{ ms}, \sigma = 0.25)
     \end{equation}
-    ensuring non-zero $\text{std}(T_{\text{down}})$ that matches human electromyographic fingertip response.
-    \item \textbf{Continuous Bézier Pointer Movement:} Mouse paths follow Fitts's Law with minimum-jerk velocity and $8-12\text{ Hz}$ physiological tremor.
+    ensuring non-zero $\text{std}(T_{\text{down}})$ that approximates human electromyographic fingertip contact distributions.
+    \item \textbf{Continuous Bézier Pointer Movement:} Mouse trajectories follow Fitts's Law with minimum-jerk velocity profiles and $8-12\text{ Hz}$ physiological micro-tremor.
 \end{enumerate}
 
-\section{Empirical Verification: 10 Bestseller Books \& Deep Pagination}
+\section{Empirical Evaluation: 10 Bestseller Books \& Deep Pagination}
 
-During live verification on Amazon's production infrastructure, the framework ingested 10 major bestseller titles, penetrating dynamic AJAX review pagination past the 13-review barrier:
+During empirical verification on Amazon's production infrastructure, the framework ingested 10 major bestseller titles, navigating dynamic AJAX review pagination past the default preview boundary:
 
 \begin{table}[h!]
 \centering
@@ -145,7 +145,12 @@ As a Man Thinketh & James Allen & \texttt{1954839367} & \textbf{13} & 100.0\% \\
 \caption{Empirical review harvesting dataset across Amazon Top Bestsellers}
 \end{table}
 
-\noindent \textbf{Key Result:} 0 CAPTCHA challenges, 0 IP bans, 100\% Verified Purchase retention, and unclipped body extraction up to 17,585 characters.
+\noindent \textbf{Empirical Observations on the Investigated Sample ($N=797$):}
+\begin{itemize}
+    \item 0 CAPTCHA challenges or IP rate-limits were encountered within the tested session envelope.
+    \item 100.0\% of ingested reviews contained authentic Verified Purchase metadata tags in the rendered DOM.
+    \item Unclipped review text was fully extracted up to 17,585 characters per individual record.
+\end{itemize}
 
 \section{A/B Control Experimentation}
 
@@ -161,16 +166,29 @@ Issued Session Cookies & \textcolor{secondary}{\textbf{0 cookies (Quarantined)}}
 Cursor Movement Physics & 0 ms Instantaneous Teleport & Bézier S-Curve + Fitts's Law \\
 Wheel-Delta Stream & \textcolor{secondary}{\textbf{Empty (JS jump)}} & \textcolor{primary}{\textbf{Stepped native WheelEvents}} \\
 Click Duration Variance & $\sigma = 0\text{ ms}$ (Uniform) & \textbf{Log-Normal ($\mu=65\text{ms}, \sigma=0.25$)} \\
-WAF Defense Outcome & \textbf{Silent Shadow-Banning} & \textbf{100\% Clean Pass (0\% Ban Rate)} \\ \bottomrule
+WAF Defense Outcome & \textbf{Silent Shadow-Banning} & \textbf{0\% Challenge Rate (Clean Pass)} \\ \bottomrule
 \end{tabular}
 \caption{Empirical comparison matrix from the A/B control experiment}
 \end{table}
 
-\section{Conclusion and Future Research Directions}
+\subsection{Multifactorial Nature and Ablation Limitations}
+We note that the A/B comparison represents a composite architectural evaluation encompassing session continuity, fingerprint masking, Bézier kinematics, and Poisson rate modulation simultaneously. Future research will focus on isolated single-factor ablation studies (e.g., comparing pure PRNG jitter against bio-telemetry under identical session conditions) to quantify the individual marginal contribution of each layer.
 
-The Bio-Entropic framework demonstrates that marrying empirical Movebank animal telemetry with inhomogeneous Poisson rate modulation and CDP-hardened Playwright automation provides a mathematically grounded, statistically indistinguishable methodology for deep e-commerce intelligence. Future work includes expanding 30-day continuous A/B power analyses across multi-vendor WAF threat models (Cloudflare, Akamai, DataDome).
+\section{Threat Model, Systemic Limitations, and Future Work}
 
-\noindent All source code, telemetry CSVs, and proof datasets are publicly available at:  
+While the presented framework successfully mitigates behavioral heuristics during finite sampling runs, several operational caveats remain:
+
+\begin{enumerate}
+    \item \textbf{TLS/JA4 Handshake Alignment:} Eliminating JavaScript telemetry does not alter the underlying operating system TLS cipher suite order. Production deployments require matching low-level TLS extensions to the claimed browser version.
+    \item \textbf{Long-Term ML Drift:} Continually replaying identical actigraphy seeds over extended multi-week cycles risks periodic detection by adaptive WAF models. Future iterations will incorporate Ornstein-Uhlenbeck stochastic drift.
+    \item \textbf{Comparative PRNG Goodness-of-Fit:} Formal Kolmogorov-Smirnov statistical tests comparing empirical animal telemetry against high-order PRNG distributions across multi-vendor WAFs (Cloudflare, Akamai, DataDome) represent a priority for future benchmark studies.
+\end{enumerate}
+
+\section{Conclusion}
+
+The Bio-Entropic framework demonstrates that integrating empirical Movebank animal telemetry with inhomogeneous Poisson rate modulation and CDP-hardened Playwright automation significantly reduces automated anomaly scoring in live e-commerce scraping scenarios. Under the evaluated experimental envelope ($N=797$ reviews across 10 bestselling books), the system achieved 0\% challenge rates and complete DOM ingestion.
+
+\noindent All source code, telemetry datasets, and empirical CSV exports are publicly available at:  
 \url{https://github.com/LemonScripter/bio-entropic-market-intelligence}.
 
 \end{document}

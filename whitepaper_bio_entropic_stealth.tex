@@ -29,7 +29,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\textcolor{darkgray}{\small Bio-entrópikus stealth keretrendszer}}
-\lhead{\textcolor{darkgray}{\small Műszaki fehér könyv és empirikus bizonyítás}}
+\lhead{\textcolor{darkgray}{\small Műszaki fehér könyv és empirikus demonstráció}}
 \rfoot{\small Oldal \thepage}
 
 \title{\textbf{\LARGE Bio-entrópikus piaci adatgyűjtő és intelligencia keretrendszer}\\[0.4em]
@@ -43,7 +43,7 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-A modern viselkedéselemző webes tűzfalak (AWS WAF Bot Control, Akamai Bot Manager, Cloudflare Turnstile) többrétegű ellenőrzéssel szűrik a robotokat: TLS/JA4 ujjlenyomat-vizsgálat, Chrome DevTools Protocol (CDP) futtatási anomáliák és a kérések közötti időzítések entrópiája alapján. Ez a fehér könyv bemutatja a \textbf{Bio-Entrópikus Állapotmotort}, amely a globális \textbf{Movebank} adatbázisból származó valós állati telemetriát képezi le egy inhomogén Poisson-folyamat $\lambda(t)$ intenzitásparaméterére. A rendszer mikromásodperces log-normális várakozási időket és Fitts-törvény szerinti Bézier kurzormozgásokat alkalmaz. A dokumentáció bemutatja a pontos Movebank kutatási azonosítókat, a 2026-os gépi tanulási detektorok (wheel-delta és kattintás-időtartam variancia) elleni védelmet, valamint 797 mély Amazon bestseller vélemény 100\%-os hitelesített vásárlói kinyerését 0\%-os tiltási arány mellett.
+A modern viselkedéselemző webes tűzfalak (AWS WAF Bot Control, Akamai Bot Manager, Cloudflare Turnstile) több független dimenzió mentén szűrik a forgalmat: TLS/JA4 ujjlenyomatok, Chrome DevTools Protocol (CDP) futtatási anomáliák és a kérések közötti időzítések entrópiája alapján. Ez a fehér könyv bemutatja a \textbf{Bio-Entrópikus Állapotmotort}, amely a globális \textbf{Movebank} adatbázisból származó valós állati telemetriát képezi le egy inhomogén Poisson-folyamat $\lambda(t)$ intenzitásparaméterére. A rendszer mikromásodperces log-normális várakozási időket és Fitts-törvény szerinti Bézier kurzormozgásokat alkalmaz. A dokumentáció részletezi a Movebank kutatási azonosítókat, a 2026-os gépi tanulási detektorok (wheel-delta és kattintás-időtartam variancia) elleni ellenintézkedéseket, valamint 797 mély Amazon bestseller vélemény kinyerését 0\%-os tiltási arány mellett a vizsgált kísérleti keretek között.
 \end{abstract}
 
 \vspace{0.6em}
@@ -70,7 +70,7 @@ A keretrendszer négy szigorúan elkülönített alrendszerre épül:
 
 \section{Matematikai modellezés: Telemetria és inhomogén Poisson-ráta $\lambda(t)$}
 
-A szintetikus pszeudo-véletlenszámok (PRNG) fázis-mintázatainak kiküszöbölésére a kérések közötti $\Delta t$ várakozási időt a valós $A(t) \in [0, 1]$ biológiai aktivitás által vezérelt sztochasztikus folyamatként modellezzük:
+A szintetikus pszeudo-véletlenszámok (PRNG) fázis-mintázatainak csökkentésére a kérések közötti $\Delta t$ várakozási időt a valós $A(t) \in [0, 1]$ biológiai aktivitás által vezérelt sztochasztikus folyamatként modellezzük:
 
 \begin{equation}
 \lambda(t) = \lambda_{\text{base}} \cdot \Phi_{\text{cirkadian}}(t) \cdot \left[1 + \gamma \cdot \frac{A(t) - \bar{A}}{\sigma_A}\right]
@@ -118,7 +118,7 @@ A 2026-os kutatások (The Moonlight tanulmány) rávilágítottak, hogy a modern
     \item \textbf{Fitts-törvény szerinti folyamatos kurzormozgás:} Bézier-görbék mikrotremorral.
 \end{enumerate}
 
-\section{Empirikus validáció: 10 bestseller könyv és mély lapozás}
+\section{Empirikus vizsgálat: 10 bestseller könyv és mély lapozás}
 
 \begin{table}[h!]
 \centering
@@ -141,9 +141,14 @@ As a Man Thinketh & James Allen & \texttt{1954839367} & \textbf{13} & 100.0\% \\
 \caption{Empirikus vásárlói véleménygyűjtési eredmények az Amazon Top Bestseller listáján}
 \end{table}
 
-\noindent \textbf{Fő mérési eredmény:} 0 CAPTCHA kihívás, 0 IP tiltás, 100\% Verified Purchase arány és akár 17,585 karakteres teljes szövegek.
+\noindent \textbf{Empirikus megfigyelések a vizsgált mintán ($N=797$):}
+\begin{itemize}
+    \item 0 CAPTCHA kihívás vagy IP-korlátozás a tesztelt munkamenet-környezetben.
+    \item A letöltött vélemények 100.0\%-a autentikus Verified Purchase jelöléssel rendelkezett a renderelt DOM-ban.
+    \item A véleményszövegek csonkítás nélkül, akár 17,585 karakteres hosszúságban kerültek mentésre.
+\end{itemize}
 
-\section{A/B kontroll kísérlet}
+\section{A/B kontroll kísérlet és multifaktorális szempontok}
 
 \begin{table}[h!]
 \centering
@@ -157,16 +162,27 @@ Kiadott session sütik & \textcolor{secondary}{\textbf{0 süti (Karantén)}} & \
 Kurzormozgás fizikája & 0 ms azonnali ugrás & Bézier S-görbe + Fitts-törvény \\
 Wheel-delta folyam & \textcolor{secondary}{\textbf{Üres (JS ugrás)}} & \textcolor{primary}{\textbf{Lépcsőzetes natív WheelEvent}} \\
 Kattintás időtartam szórása & $\sigma = 0\text{ ms}$ (Egyenletes) & \textbf{Log-normális ($\mu=65\text{ms}, \sigma=0.25$)} \\
-Tűzfal védelem eredménye & \textbf{Csendes árnyék-tiltás} & \textbf{100\% Tiszta átjutás (0\% tiltás)} \\ \bottomrule
+Tűzfal védelem eredménye & \textbf{Csendes árnyék-tiltás} & \textbf{0\% Kihívási arány (Tiszta átjutás)} \\ \bottomrule
 \end{tabular}
 \caption{Empirikus összehasonlító mátrix az A/B kontroll kísérletből}
 \end{table}
 
+\subsection{Multifaktorális jelleg és ablációs korlátok}
+Megjegyezzük, hogy az A/B összehasonlítás egy összetett architektúra értékelése (munkamenet-folytonosság, ujjlenyomat-maszkolás, Bézier-kinematika és Poisson-moduláció együttesen). A jövőbeli kutatások feladata az egyes rétegek izolált ablációs vizsgálata (pl. tiszta PRNG késleltetés vs. biológiai telemetria azonos munkamenet mellett).
+
+\section{Rendszerkorlátok és jövőbeli kutatási irányok}
+
+\begin{enumerate}
+    \item \textbf{TLS/JA4 kézfogás-illesztés:} A JavaScript-szintű ujjlenyomat nem írja felül a rendszer alacsony szintű TLS titkosítási sorrendjét; a hosszú távú stabilitáshoz szükséges a natív TLS konfiguráció harmonizálása.
+    \item \textbf{Hosszú távú ML-adaptáció:} Az azonos telemetriai magok heteken át tartó ismétlése periodikus mintázatokat hozhat létre. Ennek feloldására Ornstein-Uhlenbeck sztochasztikus drift implementációja tervezett.
+    \item \textbf{Statisztikai PRNG összehasonlítás:} Formális Kolmogorov-Szmirnov illeszkedésvizsgálat elvégzése a biológiai idősorok és a magas rendű PRNG generátorok között több védelmi rendszeren (Cloudflare, Akamai, DataDome).
+\end{enumerate}
+
 \section{Következtetés}
 
-A bio-entrópikus keretrendszer bizonyítja, hogy az empirikus Movebank állati telemetria, az inhomogén Poisson-folyamat és a CDP-keményített Playwright automatizáció ötvözése matematikailag megalapozott, statisztikailag emberitől megkülönböztethetetlen adatgyűjtést tesz lehetővé.
+A bio-entrópikus keretrendszer a vizsgált kísérleti mintán ($N=797$ vélemény 10 bestseller könyvön) demonstrálja, hogy az empirikus Movebank állati telemetria, az inhomogén Poisson-folyamat és a CDP-keményített Playwright automatizáció ötvözése jelentősen csökkenti az automatizációs anomáliapontszámot, 0\%-os kihívási arányt biztosítva a vizsgált tesztkörnyezetben.
 
-\noindent A teljes forráskód, a telemetriai CSV állományok és a bizonyító adathalmazok nyilvánosan elérhetők:  
+\noindent A teljes forráskód, a telemetriai CSV állományok és az empirikus adathalmazok nyilvánosan elérhetők:  
 \url{https://github.com/LemonScripter/bio-entropic-market-intelligence}.
 
 \end{document}
