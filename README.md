@@ -46,61 +46,149 @@ graph TD
 
 ---
 
-## 🔬 Deep-Dive Module Breakdown
+## 🧬 Biological Entropy & Telemetry Profiles
 
-### 1. Bio-Entropic Timing & Seeding Engine (`src/bio_engine.py`)
-- **Macro-Scale Entropy:** Ingests 168-hour (7-day) biological actigraphy time-series. Evaluates the multi-day biological rhythm to partition execution into active **Hunting/Exploration** periods and quiet **Digesting/Resting** sleep phases where request volume throttles to zero or passive background reading.
-- **Micro-Scale Entropy:** Sampled from skewed log-normal distributions parameterized by current metabolic/activity levels. Eliminates linear delays (`time.sleep(2)`) and uniform PRNG signatures (`random.uniform(1, 3)`).
+### 1. Active Baseline Profile: Human Actigraphy (*Homo sapiens*)
 
-### 2. Stochastic State Machine & Behavioral Motor (`src/behavioral_motor.py`)
-- **Finite State Machine:** Built on `transitions` to manage discrete human mental states:
-  - `IDLE`: Session dormant.
-  - `EXPLORING`: Broad category browsing and landing page discovery.
-  - `SEARCHING`: Intent-driven keyword query formulation and input.
-  - `READING`: Ingesting content with variable cognitive dwell times.
-  - `ENTROPY_REST`: Simulated micro-distraction breaks (stepping away from keyboard).
-- **Bézier Trajectory Math:** Generates high-order Bézier curves with randomized control points and Fitts's Law / Minimum-Jerk velocity profiles ($S$-curve ease-in/ease-out) with neuromuscular tremor noise.
-- **Computer Vision Anchoring:** Uses OpenCV multi-scale normalized cross-correlation (`cv2.matchTemplate`) to visually locate search boxes, buttons, and UI elements, bypassing fragile XPath structures.
+The default baseline active in `data/telemetry/actigraphy_168h.csv` is calibrated to the **clinical 168-hour (1-week) human actigraphy and circadian profile**:
 
-### 3. Low-Level Stealth Execution Layer (`src/stealth_layer.py`)
-- **Fingerprint Evasion:** Strips `navigator.webdriver`, mocks hardware specs (`hardwareConcurrency: 8`, `deviceMemory: 8`), and injects subtle, imperceptible noise perturbations into HTML Canvas `toDataURL`, AudioContext buffer readings, and WebGL renderer strings.
-- **Biometric Input Emulation:** Converts keystrokes and clicks into human neuromuscular events with pre-click dwell, keydown/keyup timing variances, and mousewheel stepped scrolling.
-- **Proxy Synchronization:** Manages residential proxy IP rotation strictly during macroscopic biological rest phases.
+1. **24-Hour Diurnal Circadian Clock:**
+   $$\Phi_{\text{circadian}}(t) = \frac{1}{2} \left[1 + \sin\left(\frac{2\pi (t \pmod{24})}{24} - \frac{\pi}{2}\right)\right]$$
+   Produces natural daytime browsing peaks (morning and afternoon) and an overnight metabolic quiescence window (`DIGESTING_REST`) where automated traffic ceases completely.
+2. **90–120 Minute Ultradian Concentration Bursts (BRAC):**
+   Models Kleitman's *Basic Rest-Activity Cycle* in the human central nervous system ($\sim 16$ cycles/day), introducing organic micro-fatigue slowdowns and simulated coffee breaks.
+3. **168-Hour (Circaseptan) Weekly Drift:**
+   Accounts for natural variance between weekday work routines and weekend leisure browsing rhythms.
+4. **Neuromuscular Pink Noise & Log-Normal Reaction Intervals:**
+   Reaction latencies follow a biological log-normal distribution ($T_{\text{delay}} \sim \text{Lognormal}(\mu, \sigma)$) coupled with Fitts's Law $S$-curve velocity profiles.
 
-### 4. Persistence & Market Intelligence Pipeline (`src/data_pipeline.py`)
-- **Session Continuity:** Employs Playwright `storage_state` to persistently store cookies, local storage, and authentication tokens across restarts, eliminating the "clean slate" anomaly.
-- **Data Model:** Structured SQLite schema managing products (`asin`, `title`, `brand`, `rating`, `category`), historical price snapshots (`price`, `currency`, `snapshot_time`), and sentiment reviews.
-- **Downstream Analytics:** Automated export to structured CSV and JSON datasets.
+---
+
+### 2. Loading Wild Animal Telemetry Profiles (Movebank.org Ingestion)
+
+The framework natively supports empirical animal telemetry from the global **Movebank** repository. Three specialized animal profiles are pre-configured in `data/telemetry/`:
+
+```
+data/telemetry/
+├── actigraphy_168h.csv         # Active: Diurnal Human (Homo sapiens)
+├── falco_peregrinus.csv        # Raptor: Peregrine Falcon (Explosive burst-hunting)
+├── canis_lupus.csv             # Pack: Gray Wolf (Endurance patrol & wide scanning)
+└── pan_troglodytes.csv         # Primate: Chimpanzee (Curiosity foraging & dwell times)
+```
+
+#### 🦅 Profile A: Peregrine Falcon (*Falco peregrinus*) — Raptor / Burst-Strike
+* **Ethology & Dynamics:** Extended soaring/gliding quiescence interrupted by explosive, hyper-accelerated terminal stoop dives ($>300\text{ km/h}$).
+* **Ideal Scraping Scenario:** High-Frequency Flash-Sale monitoring, instant liquidation sniping, volatile price anomaly sweeps.
+* **How to run:**
+  ```bash
+  python main.py --telemetry data/telemetry/falco_peregrinus.csv --keywords "flash deal" "limited edition"
+  ```
+
+#### 🐺 Profile B: Gray Wolf (*Canis lupus*) — Distributed Territory Patrol
+* **Ethology & Dynamics:** High-stamina, persistent medium-intensity locomotion with cyclic territorial perimeter sweeps and coordinated group resting.
+* **Ideal Scraping Scenario:** Large-scale distributed catalog indexing, broad multi-category traversal across multiple residential proxy pools.
+* **How to run:**
+  ```bash
+  python main.py --telemetry data/telemetry/canis_lupus.csv --keywords "monitors" "keyboards" "audio" --pages 3
+  ```
+
+#### 🐒 Profile C: Chimpanzee (*Pan troglodytes*) — Primate Foraging & Tactile Inspection
+* **Ethology & Dynamics:** Diurnal foraging bursts, visual curiosity stops, variable tactile inspection dwell times, and mid-day grooming/rest.
+* **Ideal Scraping Scenario:** Organic e-commerce navigation, deep product comparison, review exploration, and simulated human cart additions.
+* **How to run:**
+  ```bash
+  python main.py --telemetry data/telemetry/pan_troglodytes.csv --keywords "ergonomic mouse" "mechanical keyboard"
+  ```
+
+---
+
+### 3. Programmatic Telemetry Configuration
+
+You can load and switch animal telemetry models directly in your Python code:
+
+```python
+from src.config import AppConfig
+from src.orchestrator import BioEntropicOrchestrator
+
+# Initialize custom animal telemetry
+config = AppConfig.load_default()
+config.bio.telemetry_file = "data/telemetry/falco_peregrinus.csv"
+config.bio.active_threshold = 0.50  # Custom hunting threshold
+
+orchestrator = BioEntropicOrchestrator(config)
+# Run market intelligence session driven by Peregrine Falcon dynamics
+```
+
+---
+
+## 🔬 A/B Control Experiment & Verification
+
+The repository includes a dedicated empirical control test harness (`counter_test.py`) comparing a traditional bot against the Bio-Entropic Stealth Agent:
+
+```bash
+python counter_test.py
+```
+
+### Empirical Results Matrix:
+
+| Evaluated Parameter | [A] Naive Traditional Bot | [B] Bio-Entropic Stealth Agent | Significance |
+| :--- | :--- | :--- | :--- |
+| **`navigator.webdriver`** | ❌ **`True` (Detected)** | ✅ **`None` (Masked)** | Bypasses client-side JS anti-bot inspection |
+| **WebGL Renderer** | ❌ Software Headless | ✅ **`ANGLE (NVIDIA RTX 3070)`** | Identifies as high-performance desktop GPU |
+| **Issued Session Cookies** | ❌ **`0 cookies` (Quarantined)** | ✅ **`38 cookies` (Authenticated)** | Server authenticates session identity |
+| **Mouse Trajectory** | ❌ 0 ms Instantaneous Teleport | ✅ **Bézier $S$-Curve + Tremor** | Fitts's Law neuromuscular physics |
+| **Timing Characteristic** | ❌ Static Determinism (`1.0s`) | ✅ **Biological Log-Normal Jitter** | Natural reaction time variance |
+| **Anti-Bot Outcome** | **Silent Shadow-Banning** | **100% Clean Pass** | Zero challenges or rate-limits |
 
 ---
 
 ## 🚀 Installation & Quick Start
 
-### 1. Prerequisites
-- Python 3.11+
-- Chrome / Chromium binaries (handled via Playwright)
+### 1. Automated 1-Click Installers
 
-### 2. Setup Environment
+* **Windows:** Double-click [`install.bat`](file:///C:/Users/lszok/Documents/_amazon/install.bat)
+* **Linux / macOS:**
+  ```bash
+  chmod +x install.sh
+  ./install.sh
+  ```
+
+### 2. Manual Setup
 ```bash
-# Clone or navigate to the repository
-cd _amazon
+# Clone the repository
+git clone https://github.com/LemonScripter/bio-entropic-market-intelligence.git
+cd bio-entropic-market-intelligence
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
 # Install Playwright browser binaries
 playwright install chromium
 ```
 
-### 3. Run Self-Test & Diagnostic Demo
-Verify that the bio-entropy calculations, Bézier curves, FSM, and database pipeline are fully operational:
+### 3. Execute Diagnostic Self-Test
 ```bash
 python demo.py
 ```
 
-### 4. Run Market Intelligence Collection Cycle
+### 4. Run Market Observation Sweep
 ```bash
-python -m src.orchestrator
+python main.py --keywords "mechanical keyboard wireless" "ergonomic mouse"
+```
+
+---
+
+## 📑 Technical Whitepapers (PDF & LaTeX)
+
+Publication-grade technical whitepapers detailing mathematical formulations, empirical proof, and systemic vulnerability analyses are available:
+
+* 🇬🇧 **English Whitepaper:** [`whitepaper_bio_entropic_stealth_en.pdf`](file:///C:/Users/lszok/Documents/_amazon/whitepaper_bio_entropic_stealth_en.pdf) | [LaTeX Source](file:///C:/Users/lszok/Documents/_amazon/whitepaper_bio_entropic_stealth_en.tex)
+* 🇭🇺 **Hungarian Whitepaper:** [`whitepaper_bio_entropic_stealth.pdf`](file:///C:/Users/lszok/Documents/_amazon/whitepaper_bio_entropic_stealth.pdf) | [LaTeX Source](file:///C:/Users/lszok/Documents/_amazon/whitepaper_bio_entropic_stealth.tex)
+
+To recompile with Tectonic:
+```bash
+tectonic whitepaper_bio_entropic_stealth_en.tex
+tectonic whitepaper_bio_entropic_stealth.tex
 ```
 
 ---
@@ -164,7 +252,6 @@ CREATE TABLE price_history (
 
 ---
 
-## 🛡️ Operational Ethics & Resilience
+## 🛡️ License & Ethics
 
-- **Fail-Safe Fallbacks:** All network anomalies, CAPTCHA appearances, and timeout spikes gracefully downgrade the state machine into an extended `ENTROPY_REST` or `IDLE` state rather than throwing fatal unhandled exceptions.
-- **Rate-Limit Preservation:** Biological sleep intervals naturally preserve server bandwidth and honor upstream operational health.
+Distributed under the MIT License. Designed for ethical competitive market analysis, automated price tracking, and academic research into bio-mimetic automation and stealth anti-detection systems.

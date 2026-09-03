@@ -35,12 +35,20 @@ def main():
         default=1,
         help="Max pages per keyword query"
     )
+    parser.add_argument(
+        "--telemetry",
+        type=str,
+        default=None,
+        help="Path to biological Movebank actigraphy CSV/Parquet file (e.g., Peregrine Falcon, Wolf, Chimpanzee)"
+    )
 
     args = parser.parse_args()
 
     config = AppConfig.load_default()
     if args.headless:
         config.browser.headless = True
+    if args.telemetry:
+        config.bio.telemetry_file = args.telemetry
 
     orchestrator = BioEntropicOrchestrator(config)
     asyncio.run(orchestrator.run_market_observation_session(args.keywords, max_pages_per_kw=args.pages))
