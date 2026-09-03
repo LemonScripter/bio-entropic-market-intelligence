@@ -22,18 +22,18 @@
     linkcolor=primary,
     filecolor=secondary,
     urlcolor=primary,
-    pdftitle={Bio-Entropikus Adatgyűjtő és Piacelemző Rendszer Fehér Könyv},
+    pdftitle={Bio-entropikus adatgyűjtő és piacelemző rendszer fehér könyve},
     pdfauthor={LemonScripter / DeepMind Agentic Team}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\textcolor{darkgray}{\small Bio-Entropikus Stealth Keretrendszer}}
-\lhead{\textcolor{darkgray}{\small Műszaki Fehér Könyv \& Ellenpróba}}
+\rhead{\textcolor{darkgray}{\small Bio-entropikus stealth keretrendszer}}
+\lhead{\textcolor{darkgray}{\small Műszaki fehér könyv és ellenpróba}}
 \rfoot{\small Oldal \thepage}
 
-\title{\textbf{\LARGE Bio-Entropikus Webes Adatgyűjtő Keretrendszer}\\[0.4em]
-\Large Empirikus Működési Bizonyíték, A/B Ellenpróba és Rendszerszintű Buktatók Elemzése}
+\title{\textbf{\LARGE Bio-entropikus webes adatgyűjtő keretrendszer}\\[0.4em]
+\Large Empirikus működési bizonyíték, A/B ellenpróba és rendszerszintű buktatók elemzése}
 \author{\textbf{LemonScripter Systems Architecture \& Advanced Automation Engineering}}
 \date{2026. szeptember}
 
@@ -43,32 +43,32 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-A modern webes anti-bot és viselkedéselemző védelmi rendszerek (pl. Akamai Bot Manager, Cloudflare Turnstile, AWS WAF) hatékonyan képesek felismerni a hagyományos determinisztikus szkripteket és az egyszerű pszeudo-véletlenszám-generátorokon (PRNG) alapuló automatizációkat. Ez a tanulmány bemutatja a \textbf{Bio-Entropikus Állapotmotoron} alapuló adatgyűjtő architektúrát, amely valós biológiai aktigráfiás telemetriai adatsorokat alkalmaz mind makroszkopikus ütemezéshez, mind mikroszkopikus késleltetési entrópiához. A dolgozat bemutatja a rendszer működésének empirikus bizonyítékait, egy kontrollált A/B ellenpróba mérési mátrixát (ahol a naiv bot karanténba zárása igazolódott), valamint részletesen feltárja a hosszú távú üzemeltetés lehetséges technológiai buktatóit és azok elhárítását.
+A modern webes anti-bot és viselkedéselemző védelmi rendszerek (pl. Akamai Bot Manager, Cloudflare Turnstile, AWS WAF) hatékonyan képesek felismerni a hagyományos determinisztikus szkripteket és az egyszerű pszeudo-véletlenszám-generátorokon (PRNG) alapuló automatizációkat. Ez a tanulmány bemutatja a \textbf{bio-entropikus állapotmotoron} alapuló adatgyűjtő architektúrát, amely valós biológiai aktigráfiás telemetriai adatsorokat alkalmaz mind makroszkopikus ütemezéshez, mind mikroszkopikus késleltetési entrópiához. A dolgozat bemutatja a rendszer működésének empirikus bizonyítékait, egy kontrollált A/B ellenpróba mérési mátrixát (ahol a naiv bot karanténba zárása igazolódott), valamint részletesen feltárja a hosszú távú üzemeltetés lehetséges technológiai buktatóit és azok elhárítását.
 \end{abstract}
 
 \vspace{0.8em}
 \hrule
 \vspace{1.2em}
 
-\section{Rendszerarchitektúra és Működési Elv}
+\section{Rendszerarchitektúra és működési elv}
 
 A keretrendszer négy, szigorúan szétválasztott rétegből épül fel:
 
 \begin{enumerate}
-    \item \textbf{Bio-Entropikus Időzítő és Vetőmag Motor (\texttt{src/bio\_engine.py}):} 
+    \item \textbf{Bio-entropikus időzítő és vetőmag motor (\texttt{src/bio\_engine.py}):} 
     Egy 168 órás (1 hetes) biológiai aktigráfiás telemetria-adatsort képez le az üzemeltetési profilra. Elválasztja a \textit{HUNTING\_EXPLORATION} (aktív adatgyűjtés) fázisokat a \textit{DIGESTING\_REST} (alvó/passzív olvasási) zónáktól. A késleltetéseket a biológiai anyagcsere-aktivitáshoz igazított log-normális eloszlású mikrotremorral generálja.
     
-    \item \textbf{Sztochasztikus Állapotgép és Bézier Mozgásmotor (\texttt{src/behavioral\_motor.py}):} 
+    \item \textbf{Sztochasztikus állapotgép és Bézier-mozgásmotor (\texttt{src/behavioral\_motor.py}):} 
     Fitts törvényén és a minimális rándulás (Minimum-Jerk) modelljén alapuló harmad- és negyedfokú Bézier-görbékkel vezérli a kurzor koordinátáit, megszüntetve a gépies lineáris egérmozgást. Sztochasztikus elterelődési szüneteket iktat be az emberi figyelemvesztés szimulálására.
     
-    \item \textbf{Hardened Stealth és Hálózati Réteg (\texttt{src/stealth\_layer.py}):} 
-    A Chromium böngészőből eltávolítja az automatizációs flag-eket (\texttt{navigator.webdriver = undefined}), maszkolja a hardverjellemzőket (\texttt{hardwareConcurrency}, \texttt{deviceMemory}), és észrevehetetlen $\pm 1$ bites zajt injektál a Canvas, AudioContext és WebGL felületekbe.
+    \item \textbf{Megerősített stealth és hálózati réteg (\texttt{src/stealth\_layer.py}):} 
+    A Chromium böngészőből eltávolítja az automatizációs jelzőket (\texttt{navigator.webdriver = undefined}), maszkolja a hardverjellemzőket (\texttt{hardwareConcurrency}, \texttt{deviceMemory}), és észrevehetetlen $\pm 1$ bites zajt injektál a Canvas, AudioContext és WebGL felületekbe.
     
-    \item \textbf{Perzisztencia és Adatcsatorna (\texttt{src/data\_pipeline.py}):} 
+    \item \textbf{Perzisztencia és adatcsatorna (\texttt{src/data\_pipeline.py}):} 
     Kapcsolati SQLite relációs sémába szervezi a termékeket, ártörténeti időszeleteket és értékeléseket, miközben a Playwright \texttt{storage\_state} mechanizmusával megőrzi a cookie- és token-folytonosságot.
 \end{enumerate}
 
-\section{A Működés Empirikus Bizonyítéka}
+\section{A működés empirikus bizonyítéka}
 
 A rendszer éles validációja során az Amazon platformon végzett adatgyűjtési ciklus a következő, közvetlenül ellenőrizhető empirikus bizonyítékokat szolgáltatta:
 
@@ -77,20 +77,20 @@ A rendszer éles validációja során az Amazon platformon végzett adatgyűjté
 \small
 \begin{tabular}{lll}
 \toprule
-\textbf{Mért Elem} & \textbf{Rögzített Érték} & \textbf{Technikai Jelentőség} \\ \midrule
-Összes egyedi termék & \textbf{43 ASIN} & Sikeres, blokkolásmentes SERP parse \\
+\textbf{Mért elem} & \textbf{Rögzített érték} & \textbf{Technikai jelentőség} \\ \midrule
+Összes egyedi termék & \textbf{43 ASIN} & Sikeres, blokkolásmentes SERP HTML feldolgozás \\
 Árrögzítési időszelet & \textbf{45 bejegyzés} & Idősoros SQLite perzisztencia (\texttt{market\_data.db}) \\
 Átlagos termékár & \textbf{\$249.38} & Piaci ársáv (\$54.18 -- \$903.51) \\
 Átlagos értékelés & \textbf{4.47 / 5.0} & Érvényes vevői elégedettségi adatok \\
-Session State méret & \textbf{13.5 KB} & 39 db valódi Amazon session cookie rögzítve \\
+Session state méret & \textbf{13.5 KB} & 39 db valódi Amazon session cookie rögzítve \\
 Micro-jitter késleltetés & \textbf{62.8 -- 123.4 ms} & Nem-determinisztikus log-normális variancia \\ \bottomrule
 \end{tabular}
 \caption{Az éles adatgyűjtési futás empirikus mutatói}
 \end{table}
 
-\noindent A kinyert session fájl (\texttt{session\_state.json}) tartalmazza a valódi szerveroldali azonosítókat (\texttt{session-id}, \texttt{ubid-main}, \texttt{sst-main}), amelyek kizárólag sikeres TLS és JavaScript ujjlenyomat-ellenőrzés után kerülnek kibocsátásra.
+\noindent A kinyert munkamenet-állomány (\texttt{session\_state.json}) tartalmazza a valódi szerveroldali azonosítókat (\texttt{session-id}, \texttt{ubid-main}, \texttt{sst-main}), amelyek kizárólag sikeres TLS és JavaScript ujjlenyomat-ellenőrzés után kerülnek kibocsátásra.
 
-\section{Az A/B Ellenpróba (Control Experiment)}
+\section{Az A/B ellenpróba (kontrollcsoportos mérések)}
 
 A bizonyítás teljességéhez a keretrendszer tartalmaz egy automatizált A/B összehasonlító mérőmodult (\texttt{counter\_test.py}), amely azonos hálózati végpontról futtatja a hagyományos automatizációt és a bio-entropikus stealth ágenst.
 
@@ -99,46 +99,46 @@ A bizonyítás teljességéhez a keretrendszer tartalmaz egy automatizált A/B �
 \small
 \begin{tabular}{p{4cm}p{4cm}p{5cm}}
 \toprule
-\textbf{Tulajdonság} & \textbf{[A] Naiv Hagyományos Bot} & \textbf{[B] Bio-Entropikus Ágens} \\ \midrule
+\textbf{Tulajdonság} & \textbf{[A] Naiv hagyományos bot} & \textbf{[B] Bio-entropikus ágens} \\ \midrule
 \texttt{navigator.webdriver} & \textcolor{secondary}{\textbf{True (Azonosítva)}} & \textcolor{primary}{\textbf{None (Maszkolva)}} \\
-WebGL Renderer & Alapértelmezett szoftveres & \textbf{ANGLE (NVIDIA RTX 3070)} \\
-Kiadott Session Cookie-k & \textcolor{secondary}{\textbf{0 db (Blokkolva)}} & \textcolor{primary}{\textbf{38 db (Hitelesítve)}} \\
+WebGL profil & Alapértelmezett szoftveres & \textbf{ANGLE (NVIDIA RTX 3070)} \\
+Kiadott session cookie-k & \textcolor{secondary}{\textbf{0 db (Blokkolva)}} & \textcolor{primary}{\textbf{38 db (Hitelesítve)}} \\
 Egérmozgási dinamika & 0 ms azonnali teleportálás & Bézier $S$-görbe + Fitts-törvény \\
 Késleltetési karakterisztika & Konstans fix intervallum & Biológiai log-normális jitter \\
-Anti-Bot Reakció & \textbf{Silent Shadow-Banning} & \textbf{100\% Tiszta Áthaladás} \\ \bottomrule
+Anti-bot reakció & \textbf{Silent shadow-banning} & \textbf{100\% tiszta áthaladás} \\ \bottomrule
 \end{tabular}
-\caption{A/B Ellenpróba Összehasonlító Eredménymátrixa}
+\caption{Az A/B ellenpróba összehasonlító eredménymátrixa}
 \end{table}
 
-\subsection{A „Csendes Karantén” (Silent Shadow-Banning) Jelensége}
-Az ellenpróba feltárta az Amazon védelmi mechanizmusának működését: a naiv bot számára a szerver nem feltétlenül jelenít meg azonnal látványos CAPTCHA oldalt, hanem \textbf{megtagadja a munkamenet-azonosítók kiadását (0 cookie)}, és a háttérben szűrt vagy csonkolt választ küld vissza. Ezzel szemben a Bio-Entropikus ágens 38 hitelesített munkamenet-sütit kapott.
+\subsection{A „csendes karantén” (silent shadow-banning) jelensége}
+Az ellenpróba feltárta az Amazon védelmi mechanizmusának működését: a naiv bot számára a szerver nem feltétlenül jelenít meg azonnal látványos CAPTCHA oldalt, hanem \textbf{megtagadja a munkamenet-azonosítók kiadását (0 cookie)}, és a háttérben szűrt vagy csonkolt választ küld vissza. Ezzel szemben a bio-entropikus ágens 38 hitelesített munkamenet-sütit kapott.
 
-\section{Rendszerszintű Kockázatok és Lehetséges Buktatók}
+\section{Rendszerszintű kockázatok és lehetséges buktatók}
 
-A production-grade üzemeltetés során felmerülő kritikus buktatók mélyreható mérnöki elemzése:
+A termelési szintű üzemeltetés során felmerülő kritikus buktatók mélyreható mérnöki elemzése:
 
-\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{1. Buktató: TLS/TCP JA3/JA4 Ujjlenyomat Elcsúszás (Protocol Discrepancy)}]
-\textbf{Kockázat:} Ha a böngésző magas szinten Chrome User-Agent-et mutat, de az alacsony szintű TLS Handshake (Cipher Suite-ok sorrendje, ALPN, TLS kiterjesztések) ettől eltér, az Akamai és Cloudflare rendszerek azonnal szűrik a kapcsolatot.\\
+\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{1. buktató: TLS/TCP JA3/JA4 ujjlenyomat-elcsúszás (protokoll-eltérés)}]
+\textbf{Kockázat:} Ha a böngésző magas szinten Chrome User-Agent-et mutat, de az alacsony szintű TLS kézfogás (Cipher Suite-ok sorrendje, ALPN, TLS kiterjesztések) ettől eltér, az Akamai és Cloudflare rendszerek azonnal szűrik a kapcsolatot.\\
 \textbf{Megoldás:} A Chromium natív hálózati veremének használata a böngészőben, vagy \texttt{curl\_cffi} / uTLS integrálása a közvetlen HTTP hívásokhoz.
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{2. Buktató: Rezidens IP Túlhasználat és Subnet Reputáció}]
-\textbf{Kockázat:} Ha ugyanaz a rezidens proxy IP cím több száz kérést hajt végre fázisváltás nélkül, a céloldal rate-limiterje az IP-t átmeneti karanténba helyezi.\\
+\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{2. buktató: Rezidens IP-túlhasználat és alhálózati reputáció}]
+\textbf{Kockázat:} Ha ugyanaz a rezidens proxy IP-cím több száz kérést hajt végre fázisváltás nélkül, a céloldal rate-limiterje az IP-t átmeneti karanténba helyezi.\\
 \textbf{Megoldás:} Az IP-rotációt kötelezően a biológiai makró-pihenő (\textit{DIGESTING\_REST}) fázisokhoz kell kötni, amikor a hálózati forgalom természetes módon nullára csökken.
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{3. Buktató: Túl-zajosított Canvas/WebGL ujjlenyomat (Entropy Trap)}]
+\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{3. buktató: Túl-zajosított Canvas/WebGL ujjlenyomat (entrópiacsapda)}]
 \textbf{Kockázat:} Ha a Canvas vagy WebGL zajinjektálás túl nagy amplitúdójú vagy determinisztikus mintázatot követ, a védelmi szkriptek felfedezik az ujjlenyomat-hamisítást.\\
 \textbf{Megoldás:} A képpont-módosítás kizárólag a legkisebb helyiértékű bitre ($\pm 1$ LSB) terjedhet ki, megőrizve a hardveres renderelési koherenciát.
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{4. Buktató: Ciklikus Telemetria Ismétlődés (Long-term Profiling)}]
+\begin{tcolorbox}[colback=lightgray,colframe=primary,title=\textbf{4. buktató: Ciklikus telemetria-ismétlődés (hosszú távú profilozás)}]
 \textbf{Kockázat:} Ha a bot hónapokon keresztül pontosan ugyanazt a 168 órás görbét játssza le újra és újra, a viselkedési gépi tanulási modellek felfedezik a periodicitást.\\
 \textbf{Megoldás:} Ornstein-Uhlenbeck sztochasztikus folyamattal heti driftet és évszakos fáziseltolást kell a telemetriára szuperponálni.
 \end{tcolorbox}
 
 \section{Összegzés}
 
-A bemutatott Bio-Entropikus keretrendszer az empirikus mérések és a kontrollált ellenpróba alapján bebizonyította, hogy a biológiai aktigráfia, a Bézier-alapú fizikai kurzormodellezés és a mély ujjlenyomat-maszkolás kombinációja képes felülmúlni a modern viselkedéselemző védelmi mechanizmusokat.
+A bemutatott bio-entropikus keretrendszer az empirikus mérések és a kontrollált ellenpróba alapján bebizonyította, hogy a biológiai aktigráfia, a Bézier-alapú fizikai kurzormodellezés és a mély ujjlenyomat-maszkolás kombinációja képes felülmúlni a modern viselkedéselemző védelmi mechanizmusokat.
 
 \end{document}
