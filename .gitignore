@@ -47,8 +47,9 @@ data/user_data/Singleton*
 *.swp
 *.swo
 
-# Environment variables
+# Environment variables and Sessions
 .env
+data/sessions/session_state.json
 
 # Temporary / Scratch text notes
 bio_allati_mintazatok_cset.txt

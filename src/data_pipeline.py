@@ -174,6 +174,7 @@ class MarketDataPipeline:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                 ON CONFLICT(asin) DO UPDATE SET
                     title=excluded.title,
+                    brand=excluded.brand,
                     rating=excluded.rating,
                     ratings_count=excluded.ratings_count,
                     canonical_url=excluded.canonical_url,
@@ -210,6 +211,116 @@ class MarketDataPipeline:
         for p in products:
             self.ingest_product(p)
 
+    def parse_product_reviews_html(self, html_content: str, asin: str) -> List[Dict[str, Any]]:
+        """
+        Extracts individual customer reviews from product or dedicated review pages
+        using high-fidelity Amazon data-hook selectors.
+        """
+        soup = BeautifulSoup(html_content, "lxml")
+        reviews = []
+        review_cards = soup.select('div[data-hook="review"], div[id^="customer_review-"], div.review')
+
+        for idx, card in enumerate(review_cards):
+            try:
+                review_id = card.get("id", "").strip() or f"{asin}_rev_{idx}_{int(datetime.now().timestamp())}"
+                
+                # Reviewer name
+                name_elem = card.select_one(".a-profile-name, [data-hook='genome-widget']")
+                reviewer_name = name_elem.get_text(strip=True) if name_elem else "Amazon Customer"
+
+                # Star rating
+                rating = 5.0
+                star_elem = card.select_one('i[data-hook="review-star-rating"] span, i[class*="a-star-"] span, [data-hook="review-star-rating"]')
+                if star_elem:
+                    star_text = star_elem.get_text(strip=True)
+                    try:
+                        rating = float(star_text.split()[0])
+                    except (ValueError, IndexError):
+                        rating = 5.0
+
+                # Review title
+                title_elem = (
+                    card.select_one('[data-hook="reviewTitle"]')
+                    or card.select_one('[data-hook="review-title"]')
+                    or card.select_one('a.review-title')
+                )
+                title = "Review"
+                if title_elem:
+                    raw_title = title_elem.get_text(strip=True)
+                    if " out of 5 stars" in raw_title:
+                        title = raw_title.split(" out of 5 stars", 1)[-1].strip()
+                    else:
+                        title = raw_title
+
+                # Review body
+                body = ""
+                rich_body = card.select_one('[data-hook="reviewRichContentContainer"]')
+                if rich_body:
+                    body = rich_body.get_text(separator=" ", strip=True)
+                else:
+                    body_elem = card.select_one('[data-hook="review-body"], [data-hook="reviewText"]')
+                    if body_elem:
+                        body = body_elem.get_text(separator=" ", strip=True)
+
+                # Clean up boilerplate expander tags
+                for noise in ["Brief content visible, double tap to read full content.", "Full content visible, double tap to read brief content.", "Read more", "Read less"]:
+                    body = body.replace(noise, "").strip()
+
+                # Verified Purchase badge
+                verified = 1 if card.select_one('[data-hook="avp-badge"]') or "Verified Purchase" in card.text else 0
+
+                # Review date
+                date_elem = card.select_one('[data-hook="review-date"], [data-hook="review-by-line"]')
+                review_date = date_elem.get_text(strip=True) if date_elem else ""
+
+                reviews.append({
+                    "review_id": review_id,
+                    "asin": asin,
+                    "reviewer_name": reviewer_name,
+                    "rating": rating,
+                    "title": title,
+                    "body": body,
+                    "verified_purchase": verified,
+                    "review_date": review_date
+                })
+            except Exception as e:
+                logger.debug(f"Failed parsing individual review card: {e}")
+                continue
+
+        logger.info(f"Extracted {len(reviews)} detailed customer reviews for ASIN: {asin}")
+        return reviews
+
+    def ingest_review(self, review: Dict[str, Any]):
+        """Persists customer review into the SQLite database."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO reviews (review_id, asin, reviewer_name, rating, title, body, verified_purchase, review_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(review_id) DO UPDATE SET
+                    reviewer_name=excluded.reviewer_name,
+                    rating=excluded.rating,
+                    title=excluded.title,
+                    body=excluded.body,
+                    verified_purchase=excluded.verified_purchase,
+                    review_date=excluded.review_date
+            """, (
+                review["review_id"],
+                review["asin"],
+                review.get("reviewer_name", "Amazon Customer"),
+                review.get("rating", 5.0),
+                review.get("title", ""),
+                review.get("body", ""),
+                review.get("verified_purchase", 0),
+                review.get("review_date", "")
+            ))
+            conn.commit()
+
+    def ingest_reviews_batch(self, reviews: List[Dict[str, Any]]):
+        """Batch review ingestion helper."""
+        for r in reviews:
+            self.ingest_review(r)
+
     def export_analytics(self, export_dir: Path) -> Dict[str, Path]:
         """Generates structured CSV and JSON exports for analytical downstream pipelines."""
         export_dir = Path(export_dir)
@@ -218,6 +329,7 @@ class MarketDataPipeline:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         csv_path = export_dir / f"market_intelligence_{timestamp}.csv"
         json_path = export_dir / f"market_intelligence_{timestamp}.json"
+        reviews_csv_path = export_dir / f"reviews_intelligence_{timestamp}.csv"
 
         with self._get_connection() as conn:
             df_products = pd.read_sql_query("""
@@ -231,8 +343,17 @@ class MarketDataPipeline:
                 ORDER BY p.updated_at DESC
             """, conn)
 
+            df_reviews = pd.read_sql_query("""
+                SELECT r.review_id, r.asin, p.title as product_title, r.reviewer_name, r.rating, r.title as review_title, r.body, r.verified_purchase, r.review_date
+                FROM reviews r
+                LEFT JOIN products p ON r.asin = p.asin
+                ORDER BY r.extracted_at DESC
+            """, conn)
+
         df_products.to_csv(csv_path, index=False)
         df_products.to_json(json_path, orient="records", indent=2)
+        if not df_reviews.empty:
+            df_reviews.to_csv(reviews_csv_path, index=False)
 
-        logger.info(f"Analytics export generated:\n- CSV: {csv_path}\n- JSON: {json_path}")
-        return {"csv": csv_path, "json": json_path}
+        logger.info(f"Analytics export generated:\n- Products CSV: {csv_path}\n- JSON: {json_path}")
+        return {"csv": csv_path, "json": json_path, "reviews_csv": reviews_csv_path}

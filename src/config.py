@@ -46,11 +46,23 @@ class BioEntropyConfig:
     def active_threshold(self) -> float:
         return self.active_phase_threshold
 
+    @property
+    def telemetry_file(self) -> Path:
+        return self.telemetry_csv_path
+
+    @telemetry_file.setter
+    def telemetry_file(self, val: Any):
+        self.telemetry_csv_path = Path(val) if val else None
+
 @dataclass
 class StorageConfig:
     db_path: Path = BASE_DIR / "data" / "market_data.db"
     export_json_dir: Path = BASE_DIR / "data" / "exports"
     export_csv_dir: Path = BASE_DIR / "data" / "exports"
+
+    @property
+    def export_dir(self) -> Path:
+        return self.export_csv_dir
 
 @dataclass
 class AppConfig:
