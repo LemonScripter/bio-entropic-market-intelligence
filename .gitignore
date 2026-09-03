@@ -53,5 +53,6 @@ data/sessions/session_state.json
 
 # Temporary / Scratch text notes
 bio_allati_mintazatok_cset.txt
+facebook_bejegyzest_tervezet.txt
 *.txt
 !requirements.txt
